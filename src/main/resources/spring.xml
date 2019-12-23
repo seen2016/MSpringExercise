@@ -7,6 +7,30 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     <context:component-scan base-package="com.seen.myspring"/>
     <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-    <bean id="userInfo" class="com.seen.myspring.util.UserInfo"/>
+
+    <bean id="factory" class="com.seen.myspring.factory.CustomFactory"></bean>
+    <bean id="userInfo2" factory-bean="factory" factory-method="getUserinfo">
+        <constructor-arg name="name" type="java.lang.String" value="userInfo2"/>
+        <constructor-arg name="age" type="java.lang.String" value="userInfo2age"/>
+    </bean>
+
+    <bean id="userInfo" class="com.seen.myspring.util.UserInfo">
+        <constructor-arg name="name" type="java.lang.String" value="张三"/>
+        <constructor-arg name="age" type="java.lang.String" value="18"/>
+
+        <!--        <property name="address" value="自主城903"/>
+                <property name="name" value="李飞"/>
+                <property name="age" value="18"/>-->
+
+    </bean>
+
+
+<!--    <bean name="userService" class="com.seen.myspring.services.UserInfoService">
+        <property name="userInfo3" ref="userInfo"/>
+    </bean>-->
+    <!--使用名称 空间 注入属性值-->
+    <bean name="userService" class="com.seen.myspring.services.UserInfoService" p:userInfo3-ref="userInfo"/>
+
+
 
 </beans>

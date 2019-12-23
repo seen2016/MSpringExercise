@@ -9,8 +9,7 @@ import java.util.Arrays;
 @Aspect
 @Component
 public class LoggerAspect {
-
-    @Before("execution(public int com.seen.myspring.util.CalImpl.*(..))")
+    @Before("execution(public int com.seen.myspring.util.CalImpl.add(..))")
     public void before(JoinPoint joinPoint){
         //获取方法名
         String name = joinPoint.getSignature().getName();
@@ -39,4 +38,15 @@ public class LoggerAspect {
         String name = joinPoint.getSignature().getName();
         System.out.println(name+"方法抛出异常："+exception);
     }
+
+
+    @Around("execution(public int com.seen.myspring.util.CalImpl.*(..))")
+    public void around(JoinPoint proceedingJoinPoint) throws Throwable {
+        System.out.println("我是环绕通知-前");
+//        proceedingJoinPoint.
+//        String name = proceedingJoinPoint.getSignature().getName();
+//        System.out.println(name+"我是环绕通知-后");
+    }
+
+
 }

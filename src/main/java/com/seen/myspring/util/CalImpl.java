@@ -2,7 +2,7 @@ package com.seen.myspring.util;
 
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class CalImpl implements Cal {
     @Override
     public int add(int num1, int num2) {
