@@ -9,7 +9,7 @@
     <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 
     <bean id="factory" class="com.seen.myspring.factory.CustomFactory"></bean>
-    <bean id="userInfo2" factory-bean="factory" factory-method="getUserinfo">
+    <bean id="userInfo2" factory-bean="factory" factory-method="getUserinfo" autowire="byType">
         <constructor-arg name="name" type="java.lang.String" value="userInfo2"/>
         <constructor-arg name="age" type="java.lang.String" value="userInfo2age"/>
     </bean>
@@ -31,6 +31,28 @@
     <!--使用名称 空间 注入属性值-->
     <bean name="userService" class="com.seen.myspring.services.UserInfoService" p:userInfo3-ref="userInfo"/>
 
+    <bean id="userInfoScop" class="com.seen.myspring.util.UserInfo" scope="singleton" >
+        <constructor-arg name="name" type="java.lang.String" value="张三"/>
+        <constructor-arg name="age" type="java.lang.String" value="18"/>
 
+    </bean>
+    <!-- 创建用于执行扩展业务的实例 -->
+    <bean name="loggerAsp" class="com.seen.myspring.aop.LoggerAspect2"/>
+    <aop:config>
+        <!-- Spring AOP支持方法级别的精细切入点，且支持通配符 -->
+        <aop:pointcut id="basePointcut" expression="execution(* com.seen.myspring.util.CalImpl2.*(..))"/>
+        <!-- 定义一个或多个切面,这里要注意切点的定义要在切面之前 -->
+        <aop:aspect ref="loggerAsp" >
+            <aop:before method="before" pointcut="execution(* com.seen.myspring.util.CalImpl2.add(..))"/>
+            <aop:after method="after" pointcut-ref="basePointcut"/>
+            <aop:after method="after2" pointcut-ref="basePointcut"/>
+            <aop:after-throwing method="afterThrowing" pointcut-ref="basePointcut" throwing="exception"/>
+            <aop:after-returning method="afterReturning" pointcut-ref="basePointcut" returning="result"/>
+            <aop:around method="around" pointcut-ref="basePointcut"/>
+        </aop:aspect>
+
+
+
+    </aop:config>
 
 </beans>
